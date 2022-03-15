@@ -10,7 +10,7 @@
 <body class="h-screen bg-[#171717] text-white">
     <div class="w-full h-full flex items-center justify-center">
         <div class="flex flex-col border-2 border-white border-dashed p-7 gap-y-4 rounded-md">
-            <h1 class="text-4xl font-bold">Login</h1>
+            <h1 class="text-4xl font-bold">Registrati</h1>
             <p class="text-xl font-semibold">Inserisci le credenziali</p>
             <div class="border border-white rounded-full"></div>
             <form action="" class="flex flex-col gap-y-2">
@@ -24,21 +24,26 @@
                     <input class="border px-3 py-2 rounded-md text-black" type="password" name="password" >
                 </div>
 
+                <div class="flex flex-col gap-y-2">
+                    <p class="ml-2 font-semibold">Conferma la Password</p>
+                    <input class="border px-3 py-2 rounded-md text-black" type="password" name="confirm-password" >
+                </div>
+
                 <div class="pt-2">
-                    <input class="w-full text-md font-semibold rounded-md p-2 bg-blue-500 text-white" type="submit" value="Accedi">
+                    <input class="w-full text-md font-semibold rounded-md p-2 bg-blue-500 text-white" type="submit" value="Registrati">
                 </div>
             </form>
 
             <div class="flex gap-x-3 border p-2 rounded-md items-center">
-                <p class="text-md font-semibold">Non Hai un Account?</p>
-                <button id="goRegistrati" class="text-md font-semibold rounded-md p-2 bg-blue-500 text-white" type="button">Registrati</button>
+                <p class="text-md font-semibold">Hai già un Account?</p>
+                <button id="goLogin" class="text-md font-semibold rounded-md p-2 bg-blue-500 text-white" type="button">Accedi</button>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById("goRegistrati").addEventListener("click", () =>{
-            window.open("./registerPage.php", "_self");
+        document.getElementById("goLogin").addEventListener("click", () =>{
+            window.open("./index.php", "_self");
         })
     </script>
     
