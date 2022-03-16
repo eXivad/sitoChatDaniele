@@ -1,4 +1,4 @@
-const username = "Dabai"
+const username = "eXivad"
 
 const chat = document.getElementById("chat");
 const msg = document.getElementById("msg");
@@ -24,4 +24,18 @@ function sendMessage(){
     chat.appendChild(newMsg);
     textMsg.value="";
     chat.scrollTop = chat.scrollHeight;
+
+    var message = {
+        user: username,
+        content: text
+    }
+
+    fetch("/chat/sendMsg", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(message)
+    }).then();
 }
