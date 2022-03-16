@@ -1,0 +1,15 @@
+{
+  "name": "sitochatrl",
+  "version": "1.0.0",
+  "description": "Global Web Chat in Real Time",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "eXivad",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}
