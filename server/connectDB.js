@@ -64,14 +64,28 @@ function createAccount(accountInfo){
 
     con.query("Insert into Accounts (username, password) values ('"+username+"', '"+password+"')", (err) =>
         {
-            if (err){
-                return false;
-                throw err;
-            }
-
-            return true;
+            if (err) throw err;
         }
     )
+
+    return true;
 }
 
-module.exports = {postMessage, createAccount};
+function findAccount(accountInfo){
+    let username = accountInfo["user"];
+    let password = accountInfo["password"];
+
+    con.query("SELECT * from Accounts WHERE username = ?", [username], (err, result) => {
+        if(result[0] !== undefined){
+            if(password === result[0]["password"]){
+                console.log("Logged")
+            }
+        }
+    });
+}
+
+function accept(){
+    return true;
+}
+
+module.exports = {postMessage, createAccount, findAccount};
