@@ -1,5 +1,5 @@
 document.getElementById("goLogin").addEventListener("click", () =>{
-    window.open("./index.html", "_self");
+    window.open("/login", "_self");
 })
 
 /*

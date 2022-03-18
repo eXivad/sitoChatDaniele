@@ -1,5 +1,5 @@
 document.getElementById("goRegistrati").addEventListener("click", () =>{
-    window.open("./registerPage.html", "_self");
+    window.open("./register", "_self");
 })
 
 const username = document.querySelector("input[name='username']");
@@ -30,6 +30,7 @@ function sendPOST(newUser){
     }).then((res) => {
         if(res.status === 200){
             alert("Accesso Riuscito");
+            window.open("/chat", "_self")
         }else{
             alert("Errore Account non Creato");
         }

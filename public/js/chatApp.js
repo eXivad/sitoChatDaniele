@@ -1,4 +1,4 @@
-const username = "eXivad"
+const username = document.cookie.split("=")[1];
 
 const chat = document.getElementById("chat");
 const msg = document.getElementById("msg");
