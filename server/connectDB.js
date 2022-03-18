@@ -1,4 +1,5 @@
-const mysql = require("mysql") // Include Driver MySQL
+const mysql = require("mysql2") // Include Driver MySQL
+const bluebird = require("bluebird");
 
 // Database Connection Configuration
 const dbData = {
@@ -8,14 +9,18 @@ const dbData = {
     database: "ChatDB"
 }
 
+const con = mysql.createConnection(dbData).promise();
 // Oggetto Connessione
-const con = mysql.createConnection(dbData);
 
-// Tentativo di connessione
+
+
+/*
+Tentativo di connessione
 con.connect((err) => {
     if (err) throw err;
     console.log("Connesso al Database");
 });
+*/
 
 /*
     Funzione per Post Messaggio
@@ -30,9 +35,9 @@ function postMessage(msg){
     let content = msg["content"];
     let idMessaggioRisposta = msg["idMsg"];
 
-    con.query("select idAccount from account where nome = '"+username+"'", (err, result) => {
+    con.query("select idAccount from account where nome = '"+username+"'", (err, results) => {
         if (err) throw err;
-        var idUser = result[0]["idAccount"];
+        var idUser = results[0]["idAccount"];
 
         if(idMessaggioRisposta === undefined){
             con.query("Insert into messaggi (codAccount, messsaggio) values ("+idUser+", '"+content+"')", (err) => {
@@ -71,20 +76,20 @@ function createAccount(accountInfo){
     return true;
 }
 
-function findAccount(accountInfo){
+async function findAccount(accountInfo){
     let username = accountInfo["user"];
     let password = accountInfo["password"];
 
-    con.query("SELECT * from Accounts WHERE username = ?", [username], (err, result) => {
-        if(result[0] !== undefined){
-            if(password === result[0]["password"]){
-                console.log("Logged")
-            }
-        }
-    });
+    const [rows, fields] = await con.execute("SELECT * from Accounts WHERE username = ?", [username]);
+    return rows;
 }
 
-function accept(){
+function checkAccount(err, results, password){ 
+    if(results[0] !== undefined){
+        if(password === results[0]["password"]){
+            console.log("Logged")
+        }
+    }
     return true;
 }
 

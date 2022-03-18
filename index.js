@@ -1,5 +1,4 @@
 const express = require("express");
-const { RR } = require("mysql/lib/PoolSelector");
 const path = require("path")
 const cors = require("cors");
 const {postMessage, createAccount, findAccount} = require("./server/connectDB");
@@ -29,6 +28,7 @@ app.get("/registerPage.html", (req, res) => {
     res.sendFile(path.join(__dirname + "/registerPage.html"));
 })
 
+// User Sign-up Route
 app.post("/register", (req, res) => {
     let successo = createAccount(req.body);
     if (successo){
@@ -42,8 +42,9 @@ app.post("/register", (req, res) => {
 // Enter in the Chat
 
 app.post("/login", (req, res) => {
-    let temp = findAccount(req.body);
-    console.log(temp);
+    var temp
+    temp = await findAccount(req.body);
+    console.log(temp)
 })
 
 app.get("/chat.html", (req, res) => {
