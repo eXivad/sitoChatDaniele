@@ -29,7 +29,7 @@ function sendPOST(newUser){
         body: JSON.stringify(newUser)
     }).then((res) => {
         if(res.status === 200){
-            window.open("/", "_self");
+            alert("Accesso Riuscito");
         }else{
             alert("Errore Account non Creato");
         }

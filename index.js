@@ -42,14 +42,18 @@ app.post("/register", (req, res) => {
 // Enter in the Chat
 
 app.post("/login", (req, res) => {
-    var temp
-    temp = await findAccount(req.body);
-    console.log(temp)
+    startLogin(req.body).then(
+        (status) =>{
+            res.status = status;
+            if (res.status === 200){
+                res.cookie.user = req.body.username;
+            }
+            res.send();
+        }
+    );
 })
 
 app.get("/chat.html", (req, res) => {
-
-
     res.sendFile(path.join(__dirname + "/chat.html"));
 })
 
@@ -62,3 +66,13 @@ app.post("/chat/sendMsg", (req, res) => {
 })
 
 app.listen(port, () => {console.log("In Funzione")});
+
+async function startLogin(data){
+    const row = await findAccount(data);
+    if (row !== undefined){
+        if(row["password"] === data["password"]){
+            return 200;
+        }
+    }
+    return 500;
+}

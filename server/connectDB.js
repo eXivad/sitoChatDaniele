@@ -81,16 +81,7 @@ async function findAccount(accountInfo){
     let password = accountInfo["password"];
 
     const [rows, fields] = await con.execute("SELECT * from Accounts WHERE username = ?", [username]);
-    return rows;
-}
-
-function checkAccount(err, results, password){ 
-    if(results[0] !== undefined){
-        if(password === results[0]["password"]){
-            console.log("Logged")
-        }
-    }
-    return true;
+    return rows[0];
 }
 
 module.exports = {postMessage, createAccount, findAccount};
