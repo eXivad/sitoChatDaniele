@@ -8,7 +8,7 @@ create table Accounts(
     password varchar(255) not null,
     foto varchar(255),
     dataCreazione date not null default now()
-);
+) ENGINE=InnoDB;
 
 create table Messaggi(
     idMessaggio int not null primary key auto_increment,
@@ -18,4 +18,4 @@ create table Messaggi(
     foreign key (codMessaggioRisposta) references Messaggi(idMessaggio),
     dataInvio date not null default now(),
     messaggio text not null
-);
+) ENGINE=InnoDB;

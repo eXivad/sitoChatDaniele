@@ -1,10 +1,14 @@
 const express = require("express");
 const path = require("path")
 const cors = require("cors");
-const {postMessage, createAccount, loginAccount} = require("./server/connectDB");
-const app = express();
+const {postMessage, createAccount, loginAccount, sessionStore} = require("./server/connectDB");
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
+const http = require("http");
+const socketio = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
 const db = require(path.join(__dirname + "/server/connectDB"))
 
@@ -13,7 +17,15 @@ const port = 80;
 app.use(express.static(path.join(__dirname + "/public")));
 app.use(cors())
 app.use(express.json())
-app.use(cookieParser());
+app.use(session({
+    secret: "59fea4f9e38bea9b6d06f8f08c819f764e4131a17e2a1a768195b9a2c72a17ec", //HASH di "MarcolinoMio"
+    resave: true,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie:{
+        maxAge: 1000*60*60
+    }
+}));
 
 // ******************* ROUTES SERVER ******************************
 
@@ -29,10 +41,11 @@ app.post("/login", async (req, res) => {
 
     if (successo){
         res.status(200);
-        res.cookie("username", req.body.user, {maxAge: 1000*60*15})
+        if(!req.session.username){
+            req.session.username = req.body.user;
+        }
     }else{
         res.status(500);
-        //res.redirect("/login");
     }
 
     res.send();
@@ -55,14 +68,35 @@ app.post("/register", async (req, res) => {
 })
 
 
-
+// GET Chat Page controll cookies
 app.get("/chat", (req, res) => {
-    if(req.cookies["username"]){
+    if(req.session.username){
         res.sendFile(path.join(__dirname + "/chat.html"));
     } else res.redirect("/login");
 })
 
-// Posting Message Handler
+// Enable Sockets for RLT comunication
+io.on("connection", (socket) => {
+    console.log("New User Connected");
+
+    // When a Message is Sent Emit to Everybody
+    socket.on("sendMsg", (data) => {
+        socket.broadcast.emit("newMsg", data);
+    })
+
+})
+
+
+// Control in the Session if there is a Logged User then it returns the Username
+app.get("/getUsername", (req, res) => {
+    if(req.session.username){
+        res.json({username: req.session.username});
+    }else {
+        res.status(500);
+    }
+})
+
+// POST Message and Store into the DB
 app.post("/chat/sendMsg", async (req, res) => {
     let successo = await postMessage(req.body);
     if (successo){
@@ -72,5 +106,7 @@ app.post("/chat/sendMsg", async (req, res) => {
     res.send()
 })
 
-app.listen(port, () => {console.log("In Funzione")});
+
+// Open The Server
+server.listen(port, () => {console.log("In Funzione")});
 

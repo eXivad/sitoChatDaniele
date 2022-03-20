@@ -1,5 +1,5 @@
 const mysql = require("mysql2") // Include Driver MySQL
-const bluebird = require("bluebird");
+const MySQLStore = require("express-mysql-session");
 
 // Database Connection Configuration
 const dbData = {
@@ -19,6 +19,17 @@ if (con){
 }else{
     throw new Error("Errore di Connessione al Database");
 }
+
+// Creazione Oggetto Connessione per le Sessioni
+const sessionStore = new MySQLStore(
+    {schema: {
+                tableName: 'Sessions',
+                columnNames: {
+                    session_id: 'sessionID',
+                    expires: 'expires',
+                    data: 'data'
+                }
+}}, con);
 
 /*
     Funzione per Post Messaggio
@@ -96,4 +107,4 @@ async function loginAccount(accountInfo){
     return false;
 }
 
-module.exports = {postMessage, createAccount, loginAccount};
+module.exports = {postMessage, createAccount, loginAccount, sessionStore};

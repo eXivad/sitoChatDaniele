@@ -32,7 +32,7 @@ function sendPOST(newUser){
             alert("Accesso Riuscito");
             window.open("/chat", "_self")
         }else{
-            alert("Errore Account non Creato");
+            alert("Accesso non Riuscito");
         }
     })
 } 
