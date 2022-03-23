@@ -8,6 +8,15 @@ const messageBoxTemplate = document.getElementById("msg");
 const btnSend = document.getElementById("btnSend");
 const textMsg = document.getElementById("textMsg");
 
+//Aggiunta la possibilità di inviare messaggi con il tasto enter
+var btnSendEnter = document.getElementById("textMsg"); 
+btnSendEnter.addEventListener("keyup", function(event) {
+    if (event.key === 'Enter') {                                             //event.keyCode === 13 a quanto pare è deprecated, sostituisco con event.key === 'Enter'
+        event.preventDefault();
+        document.getElementById("btnSend").click();
+    }
+});  
+
 btnSend.addEventListener("click", checkMsg);
 
 // Check the content of the message
