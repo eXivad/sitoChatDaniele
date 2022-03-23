@@ -75,7 +75,7 @@ async function createAccount(accountInfo){
     let username = accountInfo["user"];
     let password = accountInfo["password"];
 
-    const [result] = await con.execute("INSERT into ACCOUNTS (username, password) values (?, ?)", [username, password]);
+    const [result] = await con.execute("INSERT into Accounts (username, password) values (?, ?)", [username, password]);
     if (result.affectedRows > 0){
         return true;
     } else{
