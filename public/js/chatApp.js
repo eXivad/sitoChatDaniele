@@ -1,5 +1,4 @@
 var username = "";
-getUsername();
 
 const socket = io();
 
@@ -66,7 +65,13 @@ function createNewMessageBox(msg){
 
 // Fetch Cookie Username Logged
 async function getUsername(){
-    let temp = await fetch("/getUsername");
-    temp = await temp.json();
-    username = temp.username;
+    let data = await fetch("/getUsername");
+    temp = await data.json();
+    return temp.username;
 }
+
+async function resolveUsername(){
+    username = await getUsername();
+}
+
+resolveUsername().then(() => {document.getElementById("drop-username").textContent = username;});
